@@ -8,14 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     name: Build binaries
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: mlugg/setup-zig@v1
         with:
           version: 0.13.0
       - run: zig build -Dtarget=x86_64-windows -Doptimize=ReleaseFast
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev libxfixes-dev libwayland-bin
+          packages: libasound2-dev libwayland-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libxkbcommon-dev libxfixes-dev
           version: 1.0
       - run: zig build -Doptimize=ReleaseFast
       - uses: actions/upload-artifact@v4.6.0
