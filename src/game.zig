@@ -17,7 +17,7 @@ var cursorState: Direction = .Vertical;
 
 var Level: types.LevelData = undefined;
 var level_loaded = false;
-var lastwon = false;
+var checked_win = false;
 
 pub fn levelUnloaded() bool {
     return !level_loaded;
@@ -36,7 +36,7 @@ pub fn unloadLevel() void {
 }
 
 fn checkWon() void {
-    lastwon = hasWon();
+    checked_win = hasWon();
 }
 
 fn isSameSizeAsTargetStateWire(typ: Direction, idx: usize) bool {
@@ -689,7 +689,7 @@ pub fn loop() bool {
         );
     }
 
-    if (rl.isKeyDown(.right_bracket) or lastwon) {
+    if (rl.isKeyDown(.right_bracket) or checked_win) {
         if (!won) {
             won = true;
             assets.win_sfx.getOrLoad().play();
