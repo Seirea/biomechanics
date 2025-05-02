@@ -485,8 +485,9 @@ pub fn main() anyerror!void {
                             //     rl.Color.white,
                             // );
                         }
-                        if (lev.solved)
+                        if (lev.solved) {
                             assets.checkmark.getOrLoad().drawEx(img_anchor, 0.0, 1.0, rl.Color.white);
+                        }
                         if (!lev.locked and !lev.solved and rl.checkCollisionPointRec(mousePos, bounds) and rl.isMouseButtonPressed(.left)) {
                             std.debug.print("request {s}... and setting loc={s}\n", .{ lev.name, location.getInfo().name });
 

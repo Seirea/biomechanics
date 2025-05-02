@@ -17,6 +17,7 @@ var cursorState: Direction = .Vertical;
 
 var Level: types.LevelData = undefined;
 var level_loaded = false;
+var checked_win = false;
 
 pub fn levelUnloaded() bool {
     return !level_loaded;
@@ -32,6 +33,10 @@ pub fn loadLevel(level: types.LevelData) void {
 pub fn unloadLevel() void {
     level_loaded = false;
     won = false;
+}
+
+fn checkWon() void {
+    checked_win = hasWon();
 }
 
 fn isSameSizeAsTargetStateWire(typ: Direction, idx: usize) bool {
@@ -269,6 +274,7 @@ fn shiftColumn(idx: usize, amount: i32) void {
         while (i >= 0) : (i -= 1) {
             Level.state[@intCast(@as(i32, @intCast(i)) + amount)][idx] = Level.state[i][idx];
             Level.state[i][idx] = null;
+            checkWon();
 
             if (i == 0) {
                 break;
@@ -281,6 +287,7 @@ fn shiftColumn(idx: usize, amount: i32) void {
         for (1..Level.state[0].len) |x| {
             Level.state[@intCast(@as(i32, @intCast(x)) + amount)][idx] = Level.state[x][idx];
             Level.state[x][idx] = null;
+            checkWon();
         }
     }
 
@@ -320,6 +327,7 @@ fn shiftDiagDown(idx: usize, amount: i32) void {
 
             Level.state[xc][yc] = Level.state[xc - 1][yc - 1];
             Level.state[xc - 1][yc - 1] = null;
+            checkWon();
             xc -= 1;
             yc -= 1;
         }
@@ -334,6 +342,7 @@ fn shiftDiagDown(idx: usize, amount: i32) void {
             }
             Level.state[xc][yc] = Level.state[xc + 1][yc + 1];
             Level.state[xc + 1][yc + 1] = null;
+            checkWon();
             xc += 1;
             yc += 1;
         }
@@ -372,6 +381,7 @@ fn shiftDiagUp(idx: usize, amount: i32) void {
 
             Level.state[xc][yc] = Level.state[xc + 1][yc - 1];
             Level.state[xc + 1][yc - 1] = null;
+            checkWon();
             xc += 1;
             yc -= 1;
         }
@@ -386,6 +396,7 @@ fn shiftDiagUp(idx: usize, amount: i32) void {
             }
             Level.state[xc][yc] = Level.state[xc - 1][yc + 1];
             Level.state[xc - 1][yc + 1] = null;
+            checkWon();
             xc -= 1;
             yc += 1;
         }
@@ -407,6 +418,7 @@ fn shiftRow(idx: usize, amount: i32) void {
         while (i >= 0) : (i -= 1) {
             Level.state[idx][@intCast(@as(i32, @intCast(i)) + amount)] = Level.state[idx][i];
             Level.state[idx][i] = null;
+            checkWon();
 
             if (i == 0) {
                 break;
@@ -419,6 +431,7 @@ fn shiftRow(idx: usize, amount: i32) void {
         for (1..Level.state[0].len) |x| {
             Level.state[idx][@intCast(@as(i32, @intCast(x)) + amount)] = Level.state[idx][x];
             Level.state[idx][x] = null;
+            checkWon();
         }
     }
 
@@ -676,7 +689,7 @@ pub fn loop() bool {
         );
     }
 
-    if (rl.isKeyDown(.right_bracket) or hasWon()) {
+    if (rl.isKeyDown(.right_bracket) or checked_win) {
         if (!won) {
             won = true;
             assets.win_sfx.getOrLoad().play();
