@@ -454,7 +454,7 @@ fn renderWiresForDirectionWithSelectedIndex(direction: Direction, idx: usize, is
                     coord,
                     0,
                     coord,
-                    rl.getRenderHeight(),
+                    rl.getScreenHeight(),
                     if (shiftable) consts.wire_thickness else (consts.wire_thickness / 6),
                     if (selected) (if (shiftable) consts.selected_wire_color else (rl.Color.red)) else rl.Color.gray,
                 );
@@ -485,7 +485,7 @@ fn renderWiresForDirectionWithSelectedIndex(direction: Direction, idx: usize, is
                 drawLineWithThickness(
                     0,
                     coord,
-                    rl.getRenderWidth(),
+                    rl.getScreenWidth(),
                     coord,
                     if (shiftable) consts.wire_thickness else (consts.wire_thickness / 6),
                     if (selected) (if (shiftable) consts.selected_wire_color else (rl.Color.red)) else rl.Color.gray,
@@ -499,9 +499,9 @@ fn renderWiresForDirectionWithSelectedIndex(direction: Direction, idx: usize, is
 
                 const coord = indexToWorldPos(pos) + (block_size >> 1);
                 drawLineWithThickness(
-                    rl.getRenderWidth() - coord,
+                    rl.getScreenWidth() - coord,
                     0,
-                    rl.getRenderWidth(),
+                    rl.getScreenWidth(),
                     coord,
                     if (shiftable) consts.wire_thickness else (consts.wire_thickness / 6),
                     if (selected) (if (shiftable) consts.selected_wire_color else (rl.Color.red)) else rl.Color.gray,
@@ -555,7 +555,7 @@ fn hasWon() bool {
 }
 
 pub fn loop() bool {
-    block_size = @divTrunc(rl.getRenderHeight(), @as(i32, @intCast(Level.state.len)));
+    block_size = @divTrunc(rl.getScreenHeight(), @as(i32, @intCast(Level.state.len)));
     padding = block_size >> 3;
     // rl.drawRectangle(0, 0, 128, 128, rl.Color.red);
 
@@ -685,7 +685,7 @@ pub fn loop() bool {
         rl.drawTextEx(
             fonts.main_font,
             "Click to continue...",
-            rl.Vector2.init(10, @floatFromInt(rl.getRenderHeight() - 64)),
+            rl.Vector2.init(10, @floatFromInt(rl.getScreenHeight() - 64)),
             fonts.Size.Medium,
             0,
             rl.Color.white,
