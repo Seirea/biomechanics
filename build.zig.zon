@@ -1,10 +1,11 @@
 .{
-    .name = "Project",
-    .version = "0.0.1",
+    .name = .biomechanics,
+    .fingerprint = 0x6066e65b0230dcec,
+    .version = "0.1.0",
     .dependencies = .{
-        .@"raylib-zig" = .{
-            .url = "git+https://github.com/Seirea/raylib-zig?ref=devel#050b53e3b7d083e675af08dbebb06a67b63aed07",
-            .hash = "1220c3555837aa60aac84f711e144dc3a4877768e551db80acc8da92913a52a01514",
+        .raylib_zig = .{
+            .url = "git+https://github.com/Seirea/raylib-zig.git#8f9d0e85049e4b9678925206626ede77490c4a4e",
+            .hash = "raylib_zig-5.6.0-dev-X7rfCSo2BQAHK2547iOfiupkfrwpLz6O_OZ_OAjM8dZX",
         },
     },
     .paths = .{""},

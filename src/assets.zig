@@ -1,5 +1,4 @@
 const rl = @import("raylib");
-const unwrap = @import("unwrap.zig");
 
 pub fn AssetPool(comptime T: type) type {
     return struct {
@@ -26,8 +25,8 @@ pub const SoundWrapper = struct {
     pub fn isPlaying(self: SoundWrapper) bool {
         return rl.isSoundPlaying(self.sound);
     }
-    pub fn loadFrom(fp: [*:0]const u8) SoundWrapper {
-        return .{ .sound = unwrap.unwrap(rl.Sound, rl.loadSound(fp)) };
+    pub fn loadFrom(fp: [:0]const u8) !SoundWrapper {
+        return .{ .sound = try rl.loadSound(fp) };
     }
     pub fn deinit(self: SoundWrapper) void {
         rl.unloadSound(self.sound);
@@ -38,21 +37,20 @@ pub const SoundWrapper = struct {
 pub fn Asset(comptime T: type) type {
     return struct {
         asset: ?T = null,
-        file_path: [*:0]const u8,
+        file_path: [:0]const u8,
 
-        pub fn init(comptime fp: [*:0]const u8) Asset(T) {
+        pub fn init(comptime fp: [:0]const u8) Asset(T) {
             return .{ .file_path = fp };
         }
 
         pub fn getOrLoad(self: *Asset(T)) T {
             if (self.asset == null) {
                 self.asset = switch (comptime T) {
-                    rl.Texture => unwrap.unwrap(rl.Texture, rl.Texture.fromImage(unwrap.unwrap(
-                        rl.Image,
-                        rl.Image.init(self.file_path),
-                    ))),
-                    SoundWrapper => SoundWrapper.loadFrom(self.file_path),
-                    rl.Music => unwrap.unwrap(rl.Music, rl.loadMusicStream(self.file_path)),
+                    rl.Texture => rl.Texture.fromImage(
+                        rl.Image.init(self.file_path) catch @panic("could not load image"),
+                    ) catch @panic("could not load texture from image"),
+                    SoundWrapper => SoundWrapper.loadFrom(self.file_path) catch @panic("could not load sound wrapper"),
+                    rl.Music => rl.loadMusicStream(self.file_path) catch @panic("could not load music"),
                     else => unreachable,
                 };
             }

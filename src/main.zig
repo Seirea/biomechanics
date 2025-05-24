@@ -29,9 +29,9 @@ pub fn main() anyerror!void {
     rl.drawFPS(0, 0);
     // rl.setExitKey(.null);
     rl.setTargetFPS(240);
-    rg.guiSetStyle(rg.GuiControl.default, rg.GuiDefaultProperty.text_size, fonts.Size.Medium);
+    rg.setStyle(.default, .{ .default = .text_size }, fonts.Size.Medium);
 
-    rg.guiSetFont(fonts.main_font);
+    rg.setFont(fonts.main_font);
 
     // Textures unloading (assets are lazily loaded)
     defer assets.assetPool.deinitAll();
@@ -124,7 +124,7 @@ pub fn main() anyerror!void {
                                 location = poi.location;
                             },
                             .Hovered => {
-                                const dat: [*:0]const u8 = @ptrCast(poi.location.getInfo().name);
+                                const dat: [:0]const u8 = @ptrCast(poi.location.getInfo().name);
                                 const bounds = rl.measureTextEx(fonts.main_font, dat, fonts.Size.Small, 0);
                                 rl.drawRectangleRec(
                                     rl.Rectangle.init(
@@ -363,7 +363,7 @@ pub fn main() anyerror!void {
                             0,
                         ) catch |err| blk: {
                             std.log.err("err: {}", .{err});
-                            break :blk @as([*:0]const u8, @ptrCast(info.name));
+                            break :blk @as([:0]const u8, @ptrCast(info.name));
                         },
                         anchor,
                         fonts.Size.Medium,
@@ -425,7 +425,7 @@ pub fn main() anyerror!void {
                             0,
                         ) catch |err| blk: {
                             std.debug.print("err: {}", .{err});
-                            break :blk @as([*:0]const u8, @ptrCast(location.getInfo().name));
+                            break :blk @as([:0]const u8, @ptrCast(location.getInfo().name));
                         },
                         main_anchor,
                         fonts.Size.Medium,
