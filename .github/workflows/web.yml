@@ -13,6 +13,9 @@ jobs:
         with:
           version: 0.13.0
       - uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 3.1.74
+          actions-cache-folder: "emsdk-cache"
       - run: zig build -Dtarget=wasm32-emscripten -Doptimize=ReleaseFast --sysroot "$EMSDK/upstream/emscripten"
       - name: Upload static files as artifact
         id: deployment
