@@ -25,7 +25,6 @@ pub fn build(b: *std.Build) !void {
         b.getInstallStep().dependOn(&web_assets.step);
 
         const exe_lib = try rlz.emcc.compileForEmscripten(b, "BioMechanics", "src/main.zig", target, optimize);
-
         exe_lib.linkLibrary(raylib_artifact);
         exe_lib.root_module.addImport("raylib", raylib);
         exe_lib.root_module.addImport("raygui", raygui);
@@ -35,21 +34,16 @@ pub fn build(b: *std.Build) !void {
         //this lets your program access files like "resources/my-image.png":
         link_step.addArg("--embed-file");
         link_step.addArg("resources/");
-        // asyncify off b/c of animation
-        //link_step.addArg("-s");
-        //link_step.addArg("ASYNCIFY");
+
         link_step.addArg("--shell-file");
         link_step.addArg("web/template.html");
 
-        // link_step.addArg("-s");
-        // link_step.addArg("ASSERTIONS");
+        link_step.addArg("-sEXPORTED_RUNTIME_METHODS=HEAP8,HEAPU32,HEAPF32");
+        // link_step.addArg("-sASSERTIONS=2");
         // link_step.addArg("-sALLOW_MEMORY_GROWTH");
+        link_step.addArg("-sALLOW_MEMORY_GROWTH");
+        link_step.addArg("-sSTACK_SIZE=256mb");
 
-        link_step.addArg("-s");
-        link_step.addArg("ALLOW_MEMORY_GROWTH");
-
-        link_step.addArg("-s");
-        link_step.addArg("TOTAL_STACK=256mb");
         // link_step.addArg("-s TOTAL_MEMORY=67108864");
         // link_step.addArg("-s TOTAL_MEMORY=67108864");
 
