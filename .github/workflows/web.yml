@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - main
-      - 0.14.1
+      - next
 
 jobs:
   build:
