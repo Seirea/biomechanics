@@ -38,7 +38,7 @@ pub fn build(b: *std.Build) !void {
         link_step.addArg("--shell-file");
         link_step.addArg("web/template.html");
 
-        link_step.addArg("-sEXPORTED_RUNTIME_METHODS=HEAP8,HEAPU32,HEAPF32");
+        link_step.addArg("-sEXPORTED_RUNTIME_METHODS=requestFullscreen,HEAP8,HEAPU32,HEAPF32");
         // link_step.addArg("-sASSERTIONS=2");
         // link_step.addArg("-sALLOW_MEMORY_GROWTH");
         link_step.addArg("-sALLOW_MEMORY_GROWTH");
