@@ -42,7 +42,7 @@ pub fn build(b: *std.Build) !void {
         // link_step.addArg("-sASSERTIONS=2");
         // link_step.addArg("-sALLOW_MEMORY_GROWTH");
         link_step.addArg("-sALLOW_MEMORY_GROWTH");
-        link_step.addArg("-sSTACK_SIZE=256mb");
+        // link_step.addArg("-sSTACK_SIZE=256mb");
 
         // link_step.addArg("-s TOTAL_MEMORY=67108864");
         // link_step.addArg("-s TOTAL_MEMORY=67108864");
